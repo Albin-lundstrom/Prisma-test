@@ -3,14 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Card</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-        <p><%= data[i].id %></p>
-        <p><%= data[i].email %></p>
-        <p><%= data[i].phone %></p>
-        <% if(data[i].img != null){ %>
-            <img src="/img/<%= data[i].img %>" alt="img">
-        <% }; %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="">Navbar</a>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="./create">Create Card</a>
+            </div>
+          </div>
+        </div>
+</nav>
+<div class="container-lg d-flex flex-row bd-highlight mb-3" style="margin-top: 2%;">
+    <div class="p-2 d-flex flex-column mb-3 card" style="width: 18rem; height: 30rem;">
+    <% if(data[i].img != null){ %>
+        <img  class="p-2 card-img-top"src="/img/<%= data[i].img %>" alt="img" style="width: 100%; height: 50%;">
+    <% }; %>
+        <div class="card-body p-2 d-flex flex-column">
+        <h5 class="card-title"><%= data[i].name %></h5>
+        <p class="p-2">ID: <%= data[i].id %></p>
+        <p class="p-2">Email: <%= data[i].email %></p>
+        <p class="p-2">PhoneNumber: <%= data[i].phone %></p>
+        <a class="p-2 btn btn-danger" href="./card<%=i%>">Edit Card</a>
+        </div>
+    </div>
+    <div> 
+        <div>
+            <form action="./card<%=i%>" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; width: 400px;">
+                <input class="form-control" type="number" name="id" id="id" placeholder="id" readonly value="<%= data[i].id %>">
+                <input type="text" name="name" id="name" placeholder="Name">
+                <input type="email" name="email" id="email" placeholder="Email">
+                <input type="number" name="phone" id="phone" placeholder="PhoneNumber">
+                <input type="file" name="img" id="img" accept=".jpg, .jpeg, .png">
+                <input type="submit" value="Submit">
+            </form>    
+        </div>
+    </div>
+</div>
 </body>
 </html>

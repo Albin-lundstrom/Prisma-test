@@ -43,16 +43,13 @@ process.on('beforeExit', async () => {
     await prisma.$disconnect();
 });
 
-app.get('/edit', function (req, res) {  
-    res.render('edit.ejs', {
-    });
-})
-app.post('/edit', upload.single('img'), async (request, response) => {
-    let { id, email, name, phone } = request.body;
+
+app.post('/card:id', upload.single('img'), async (request, res) => {
+    let {id, email, name, phone } = request.body;
     console.log(request.body);
     const img = request.file ? request.file.filename : null;
     edits = {
-        id:'',
+        id: '',
         name:name,
         email:email,
         phone:phone,
@@ -73,13 +70,29 @@ app.post('/edit', upload.single('img'), async (request, response) => {
         changes[Object.keys(edits)[4]] = Object.values(edits)[4];
     }
     try {
+        const clientUrl = request.hostname + request.originalUrl;
+        cilentPath = clientUrl
+        let index = Number(cilentPath.slice(14));
+        console.log(changes)
         const newUser = await prismaEdit(id, changes);
-        res.render('edit.ejs', {
-        });
-    } catch (error) {
+        main().then((res) => test(res));
+        let test = (data) => {
+        res.render('card.ejs', {
+        data: data,
+        i: index
+        })}
+    }catch (error) {
         //response.status(500).send('Internal Server Error');
-        res.render('edit.ejs', {
-        });    
+        const clientUrl = request.hostname + request.originalUrl;
+        cilentPath = clientUrl
+        console.log(cilentPath);
+        let index = Number(cilentPath.slice(14));
+        main().then((res) => test(res));
+        let test = (data) => {
+        res.render('card.ejs', {
+        data: data,
+        i: index
+        })}
     }
 });
 process.on('beforeExit', async () => {
@@ -99,6 +112,10 @@ app.get('/card:id', (req, res) => {
         i: index
     });
     }
+});
+app.get('/card', (req, res) => {
+    res.render('index.ejs', {
+    });
 });
 
 var server = app.listen(8000, function () {  
